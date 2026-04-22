@@ -15,7 +15,8 @@ export type Recommendation = {
   warnings: string[];
   horseNotes: string[];
   baselinePlan: string[];
-  appliedDefaults: string[];
+  feedingSuggestion: { name: string; amount: string; note?: string }[];
+  supplements: { name: string; amount: string; note?: string }[];
 };
 
 function foragePercent(goal: Goal) {
@@ -32,17 +33,6 @@ export function buildRecommendation(form: FormState): Recommendation {
   const summary: string[] = [];
   const adjustments: string[] = [];
   const warnings: string[] = [];
-  const appliedDefaults: string[] = [];
-
-  if (form.goal === horse.defaultGoal) {
-    appliedDefaults.push(`${horse.name}'s default goal is set to ${horse.defaultGoal}.`);
-  }
-
-  for (const symptom of horse.defaultSymptoms) {
-    if (symptoms.has(symptom)) {
-      appliedDefaults.push(`${horse.name}'s default condition includes ${symptom.replace("_", " ")}.`);
-    }
-  }
 
   if (form.goal === "gain") {
     summary.push("Increase calories gradually with fiber- and fat-based feed choices.");
@@ -109,6 +99,7 @@ export function buildRecommendation(form: FormState): Recommendation {
     warnings,
     horseNotes: horse.notes,
     baselinePlan: horse.baselinePlan,
-    appliedDefaults,
+    feedingSuggestion: horse.feedingSuggestion,
+    supplements: horse.supplements,
   };
 }
