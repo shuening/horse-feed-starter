@@ -28,6 +28,12 @@ const cardStyle: React.CSSProperties = {
   boxShadow: "0 8px 24px rgba(15, 23, 42, 0.06)",
 };
 
+const listStyle: React.CSSProperties = {
+  marginTop: 8,
+  paddingLeft: 20,
+  lineHeight: 1.5,
+};
+
 export default function HomePage() {
   const [horseId, setHorseId] = useState<HorseId>("tenor");
   const [goal, setGoal] = useState<Goal>(getHorseById("tenor").defaultGoal);
@@ -55,12 +61,11 @@ export default function HomePage() {
   }
 
   return (
-
-  <main style={pageStyle}>
+    <main style={pageStyle}>
       <div style={{ marginBottom: 24 }}>
         <h1 style={{ fontSize: 36, marginBottom: 8 }}>Horse Feeding Instruction Helper</h1>
         <p style={{ fontSize: 18, color: "#4b5563" }}>
-          Version 2 starter: each horse has a built-in weight, default goal, and default conditions.
+          Version 3.1 starter: horse notes, baseline plan, forage targets, feeding suggestions, and supplements.
         </p>
       </div>
 
@@ -85,7 +90,7 @@ export default function HomePage() {
 
           <div style={{ marginBottom: 18, padding: 14, borderRadius: 12, background: "#f9fafb" }}>
             <div style={{ fontWeight: 700, marginBottom: 8 }}>Selected horse baseline</div>
-            <ul style={{ margin: 0, paddingLeft: 18 }}>
+            <ul style={listStyle}>
               {selectedHorse.notes.map((note) => (
                 <li key={note}>{note}</li>
               ))}
@@ -100,8 +105,7 @@ export default function HomePage() {
               ["lose", "Weight loss"],
             ] as [Goal, string][]).map(([value, label]) => (
               <label key={value} style={{ display: "block", marginBottom: 8 }}>
-
-    <input type="radio" checked={goal === value} onChange={() => setGoal(value)} /> {label}
+                <input type="radio" checked={goal === value} onChange={() => setGoal(value)} /> {label}
                 {selectedHorse.defaultGoal === value ? " (default for this horse)" : ""}
               </label>
             ))}
@@ -138,8 +142,7 @@ export default function HomePage() {
             </div>
             <div style={{ padding: 14, borderRadius: 12, background: "#ecfeff" }}>
               <div style={{ fontSize: 13, color: "#0f766e", fontWeight: 700 }}>Known weight</div>
-
-        <div style={{ fontSize: 20, fontWeight: 700 }}>{recommendation.weightLb} lb</div>
+              <div style={{ fontSize: 20, fontWeight: 700 }}>{recommendation.weightLb} lb</div>
             </div>
           </div>
 
@@ -149,42 +152,55 @@ export default function HomePage() {
           </div>
 
           <h3>Horse notes</h3>
-          <ul>
+          <ul style={listStyle}>
             {recommendation.horseNotes.map((item) => (
-              <li key={item}>{item}</li>
+      <li key={item}>{item}</li>
             ))}
           </ul>
 
           <h3>Baseline plan for this horse</h3>
-          <ul>
+          <ul style={listStyle}>
             {recommendation.baselinePlan.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
 
-          <h3>Applied defaults</h3>
-          <ul>
-            {recommendation.appliedDefaults.map((item) => (
-              <li key={item}>{item}</li>
+          <h3>Feeding suggestion</h3>
+          <ul style={listStyle}>
+            {recommendation.feedingSuggestion.map((item) => (
+              <li key={`${item.name}-${item.amount}`}>
+                <strong>{item.name}:</strong> {item.amount}
+                {item.note ? ` — ${item.note}` : ""}
+              </li>
+            ))}
+          </ul>
+
+          <h3>Supplements</h3>
+          <ul style={listStyle}>
+            {recommendation.supplements.map((item) => (
+              <li key={`${item.name}-${item.amount}`}>
+                <strong>{item.name}:</strong> {item.amount}
+                {item.note ? ` — ${item.note}` : ""}
+              </li>
             ))}
           </ul>
 
           <h3>Summary</h3>
-          <ul>
+          <ul style={listStyle}>
             {recommendation.summary.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
 
           <h3>Suggested adjustments</h3>
-          <ul>
+          <ul style={listStyle}>
             {recommendation.adjustments.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
 
           <h3>Warnings</h3>
-          <ul>
+          <ul style={listStyle}>
             {recommendation.warnings.map((item) => (
               <li key={item}>{item}</li>
             ))}
