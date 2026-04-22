@@ -1,4 +1,4 @@
-export type HorseId = "tenor" | "odinn" | "spoi" | "uffie";
+xport type HorseId = "tenor" | "odinn" | "spoi" | "uffie";
 
 export type SymptomId =
   | "poor_teeth"
@@ -9,6 +9,12 @@ export type SymptomId =
 
 export type Goal = "gain" | "maintain" | "lose";
 
+export type FeedingItem = {
+  name: string;
+  amount: string;
+  note?: string;
+};
+
 export type HorseProfile = {
   id: HorseId;
   name: string;
@@ -17,6 +23,8 @@ export type HorseProfile = {
   defaultGoal: Goal;
   defaultSymptoms: SymptomId[];
   baselinePlan: string[];
+  feedingSuggestion: FeedingItem[];
+  supplements: FeedingItem[];
 };
 
 export const HORSES: HorseProfile[] = [
@@ -32,45 +40,17 @@ export const HORSES: HorseProfile[] = [
       "Keep starch and sugar low because of PSSM.",
       "Make feed changes gradually and watch manure quality.",
     ],
+    feedingSuggestion: [
+      { name: "Timothy hay cubes", amount: "9.5 lb/day", note: "Feed as a fully soaked mash." },
+      { name: "Beet pulp / beet cubes", amount: "1.0 lb/day dry equivalent", note: "Soak well before feeding if used as extra digestible fiber." },
+      { name: "Haystack Special Blend", amount: "2.0 lb/day" },
+    ],
+    supplements: [
+      { name: "Triple Crown Balancer Gold", amount: "0.75 lb/day" },
+      { name: "Salt", amount: "Free-choice", note: "Keep water available at all times." },
+    ],
   },
   {
     id: "odinn",
     name: "Odinn",
     weightLb: 700,
-    notes: ["Healthy adult"],
-    defaultGoal: "maintain",
-    defaultSymptoms: [],
-    baselinePlan: [
-      "Start with a simple forage-first maintenance plan.",
-      "Adjust only if body condition or workload changes.",
-    ],
-  },
-  {
-    id: "spoi",
-    name: "Spoi",
-    weightLb: 950,
-    notes: ["Healthy adult", "A little overweight", "Possible insulin concerns"],
-    defaultGoal: "lose",
-    defaultSymptoms: ["insulin"],
-    baselinePlan: [
-      "Use a conservative calorie plan because Spoi is a little overweight.",
-      "Prioritize low-sugar forage and avoid adding calories unless truly needed.",
-    ],
-  },
-  {
-    id: "uffie",
-    name: "Uffie",
-    weightLb: 800,
-    notes: ["Healthy adult"],
-    defaultGoal: "maintain",
-    defaultSymptoms: [],
-    baselinePlan: [
-      "Start with a balanced forage-first maintenance ration.",
-      "Increase or reduce feed only if body condition begins to shift.",
-    ],
-  },
-];
-
-export function getHorseById(id: HorseId) {
-  return HORSES.find((horse) => horse.id === id)!;
-}
